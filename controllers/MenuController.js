@@ -39,4 +39,13 @@ module.exports = class MenuController {
     clear() {
         log('\x1Bc');
     }
+    addContact() {
+        this.clear();
+        log('addContact called');
+        this.main();
+    }
+    exit() {
+        log('Thanks for using AddresBloc!');
+        process.exit();
+    }
 }
