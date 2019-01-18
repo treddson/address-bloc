@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const log = console.log
+const d = new Date();
 
 module.exports = class MenuController {
     constructor() {
@@ -10,7 +11,8 @@ module.exports = class MenuController {
                 message: 'Please choose from an option below: ',
                 choices: [
                     'Add new contact',
-                    'Exit'
+                    'Exit',
+                    'Get date'
                 ]
             }
         ];
@@ -23,6 +25,9 @@ module.exports = class MenuController {
           switch(response.mainMenuChoice){
             case "Add new contact":
               this.addContact();
+              break;
+            case "Get date":
+              this.getDate();
               break;
             case "Exit":
               this.exit();
@@ -42,6 +47,11 @@ module.exports = class MenuController {
     addContact() {
         this.clear();
         log('addContact called');
+        this.main();
+    }
+    getDate() {
+        this.clear();
+        log(`Today is ${d}`);
         this.main();
     }
     exit() {
