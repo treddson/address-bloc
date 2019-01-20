@@ -58,4 +58,7 @@ module.exports = class MenuController {
         log('Thanks for using AddresBloc!');
         process.exit();
     }
+    getContactCount() {
+        return this.contacts.length;
+    }
 }
