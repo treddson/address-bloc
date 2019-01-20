@@ -12,7 +12,8 @@ module.exports = class MenuController {
                 choices: [
                     'Add new contact',
                     'Exit',
-                    'Get date'
+                    'Get date',
+                    'Reminder'
                 ]
             }
         ];
@@ -60,5 +61,8 @@ module.exports = class MenuController {
     }
     getContactCount() {
         return this.contacts.length;
+    }
+    remindMe() {
+        return `Learning is a life-long pursuit`
     }
 }
