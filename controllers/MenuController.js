@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const log = console.log
-const d = new Date();
+const date = new Date();
+const ContactController = require("./ContactController");
 
 module.exports = class MenuController {
     constructor() {
@@ -12,12 +13,11 @@ module.exports = class MenuController {
                 choices: [
                     'Add new contact',
                     'Exit',
-                    'Get date',
-                    'Reminder'
+                    'Get date'
                 ]
             }
-        ];
-        this.contacts = [];
+        ]
+        this.book = new ContactController();
     }
 
     main() {
@@ -47,12 +47,19 @@ module.exports = class MenuController {
     }
     addContact() {
         this.clear();
-        log('addContact called');
-        this.main();
+        inquirer.prompt(this.book.addContactQuestions).then((answers) => {
+            this.book.addContact(answers.name, answers.phone).then((contact) => {
+              console.log("Contact added successfully!");
+              this.main();
+            }).catch((err) => {
+              console.log(err);
+              this.main();
+            });
+          });
     }
     getDate() {
         this.clear();
-        log(`Today is ${d}`);
+        log(`Today is ${date}`);
         this.main();
     }
     exit() {
