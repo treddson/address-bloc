@@ -12,8 +12,10 @@ module.exports = class MenuController {
                 message: 'Please choose from an option below: ',
                 choices: [
                     'Add new contact',
-                    'Exit',
-                    'Get date'
+                    'Get date',
+                    'View all contacts',
+                    'Search for a contact',
+                    'Exit'
                 ]
             }
         ]
@@ -29,6 +31,12 @@ module.exports = class MenuController {
               break;
             case "Get date":
               this.getDate();
+              break;
+            case "View all contacts":
+              this.getContacts();
+              break;
+            case "Search for a contact":
+              this.search();
               break;
             case "Exit":
               this.exit();
@@ -62,6 +70,24 @@ module.exports = class MenuController {
         log(`Today is ${date}`);
         this.main();
     }
+    getContacts() {
+        this.clear();
+        this.book.getContacts().then(contacts => {
+            for (const contact of contacts) {
+                console.log(`
+                  name: ${contact.name}
+                  phone number: ${contact.phone}
+                  email: ${contact.email}   
+                ______________`
+              );
+           }
+           this.main();
+        }).catch(err => {
+            console.log(err);
+            this.main();
+        });
+
+    }
     exit() {
         log('Thanks for using AddresBloc!');
         process.exit();
@@ -72,4 +98,35 @@ module.exports = class MenuController {
     remindMe() {
         return `Learning is a life-long pursuit`
     }
+    search(){
+        inquirer.prompt(this.book.searchQuestions)
+        .then((target) => {
+         this.book.search(target.name)
+         .then((contact) => {
+            if(contact === null){
+              this.clear();
+              console.log("contact not found");
+              this.search();
+            } else {
+              this.showContact(contact);
+           }
+  
+          });
+       })
+       .catch((err) => {
+         console.log(err);
+         this.main();
+       });
+      }
+      showContact(contact){
+        this._printContact(contact);
+      }
+      _printContact(contact){
+        console.log(`
+          name: ${contact.name}
+          phone number: ${contact.phone}
+          email: ${contact.email}
+          ---------------`
+        );
+      }
 }
